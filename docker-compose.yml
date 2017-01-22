@@ -1,0 +1,23 @@
+# Docker environment for local development
+version: '2'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:3.1.1
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:3.1.1
+    ports:
+      - "9092:9092"
+      - "8082:8082"
+    environment:
+      - KAFKA_BROKER_ID=0
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+    depends_on:
+      - zookeeper
+
